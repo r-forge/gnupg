@@ -31,18 +31,26 @@
 #include <gcrypt.h>
 
 
-SEXP encrypt(SEXP Txt, SEXP Algo, SEXP Length, SEXP Skip) {
+SEXP encrypt(SEXP theKey, SEXP theText) {
 
   char * txt;
   size_t nChar;
 
-  if (IS_RAW(Txt)) { /* Txt is either RAW */
-    txt = (char*) RAW(Txt);
-    nChar = LENGTH(Txt);
+  if (IS_RAW(theText)) { /* Txt is either RAW */
+    txt = (char*) RAW(theText);
+    nChar = LENGTH(theText);
   } else { /* or a string */
-    txt = (char*) STRING_VALUE(Txt);
+    txt = (char*) STRING_VALUE(theText);
     nChar = strlen(txt);
   }
 
-  return Txt;
+  char output[65];
+  strcpy(output, "some silly hard coded result");
+
+  SEXP theResult = NULL;
+  PROTECT(theResult=allocVector(STRSXP, 1));
+  SET_STRING_ELT(theResult, 0, mkChar(output));
+  UNPROTECT(1);
+
+  return theResult;
 }
