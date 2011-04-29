@@ -44,4 +44,5 @@ SEXP encrypt(SEXP Txt, SEXP Algo, SEXP Length, SEXP Skip) {
     nChar = strlen(txt);
   }
 
+  return Txt;
 }
