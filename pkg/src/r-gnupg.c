@@ -28,10 +28,13 @@
 #include <R.h>
 #include <Rdefines.h>
 #include <Rinternals.h>
-#include <gpgme.h>
+#include <gcrypt.h>
 
 
 SEXP encrypt(SEXP Txt, SEXP Algo, SEXP Length, SEXP Skip) {
+
+  char * txt;
+  size_t nChar;
 
   if (IS_RAW(Txt)) { /* Txt is either RAW */
     txt = (char*) RAW(Txt);
