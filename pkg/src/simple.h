@@ -24,8 +24,8 @@ static const char
 void strdecode(const unsigned char * in, unsigned char ** out);
 void strencode(const unsigned char * in, unsigned char ** out);
 
-unsigned char *signSomeText(const char * theKeyFile, unsigned char * md);
+unsigned char *signSomeText(const char * key_file_name, unsigned char * string_to_sign);
 
-char * strFromSEXP(SEXP theSEXP);
+unsigned char * strFromSEXP(SEXP);
 
 #endif /* RGNUPG_H_ */

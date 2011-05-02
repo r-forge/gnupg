@@ -56,13 +56,13 @@ void strencode(const unsigned char * in, unsigned char ** out) {
 	}
 }
 
-unsigned char *signSomeText(const char * theKeyFile, unsigned char * md) {
+unsigned char *signSomeText(const char * key_file_name, unsigned char * string_to_sign) {
 
-	size_t mdlen = strlen(md);
+	size_t mdlen = strlen(string_to_sign);
 
 	FILE *rsa_pkey_file;
 
-	if ((rsa_pkey_file = fopen(theKeyFile, "r")) == NULL) {
+	if ((rsa_pkey_file = fopen(key_file_name, "r")) == NULL) {
 		fprintf(stderr, "error opening Private Key file\n");
 		return NULL;
 	}
@@ -80,13 +80,13 @@ unsigned char *signSomeText(const char * theKeyFile, unsigned char * md) {
 		return NULL;
 	}
 
-	if (!RSA_sign_ASN1_OCTET_STRING(priv_key_evp->type, md, mdlen, sig,
+	if (!RSA_sign_ASN1_OCTET_STRING(priv_key_evp->type, string_to_sign, mdlen, sig,
 			&siglen, priv_key_evp->pkey.rsa)) {
 		fprintf(stderr, "Error signing text.\n");
 		return NULL;
 	}
 
-	if (!RSA_verify_ASN1_OCTET_STRING(priv_key_evp->type, md, mdlen, sig,
+	if (!RSA_verify_ASN1_OCTET_STRING(priv_key_evp->type, string_to_sign, mdlen, sig,
 			siglen, priv_key_evp->pkey.rsa)) {
 		fprintf(stderr, "Error verifying text.\n");
 		return NULL;
@@ -97,15 +97,15 @@ unsigned char *signSomeText(const char * theKeyFile, unsigned char * md) {
 	return result;
 }
 
-char * strFromSEXP(SEXP theSEXP) {
-	char * result = NULL;
-	if (IS_RAW(theSEXP)) { /* Txt is either RAW */
-		size_t resultlen = LENGTH(theSEXP);
+unsigned char * strFromSEXP(SEXP theString) {
+	unsigned char * result = NULL;
+	if (IS_RAW(theString)) { /* Txt is either RAW */
+		size_t resultlen = LENGTH(theString);
 		result = malloc(resultlen + 1);
-		result = strncpy(result, (char*) RAW(theSEXP), resultlen);
+		strncpy((unsigned char*) result, (char*) RAW(theString), resultlen);
 		result[resultlen] = 0;
 	} else { /* or a string */
-		result = (char*) STRING_VALUE(theSEXP);
+		result = (unsigned char*) STRING_VALUE(theString);
 	}
-
+	return result;
 }

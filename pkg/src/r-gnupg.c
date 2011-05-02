@@ -45,7 +45,7 @@ SEXP encrypt(SEXP theKey, SEXP theText) {
 
 SEXP sign(SEXP theKeyFile, SEXP theTextToSign) {
 
-	char * output = signSomeText(strFromSEXP(theKeyFile), strFromSEXP(theTextToSign));
+	unsigned char * output = signSomeText(strFromSEXP(theKeyFile), strFromSEXP(theTextToSign));
 
 	SEXP theResult = NULL;
 	PROTECT(theResult=allocVector(STRSXP, 1));
