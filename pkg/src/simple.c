@@ -97,15 +97,21 @@ unsigned char *signSomeText(const char * key_file_name, unsigned char * string_t
 	return result;
 }
 
+/*
+ * return a C string.  you are responsible for its deallocation (call free).
+ */
 unsigned char * strFromSEXP(SEXP theString) {
-	unsigned char * result = NULL;
+	size_t resultlen;
+	char * orig;
 	if (IS_RAW(theString)) { /* Txt is either RAW */
-		size_t resultlen = LENGTH(theString);
-		result = malloc(resultlen + 1);
-		strncpy((unsigned char*) result, (char*) RAW(theString), resultlen);
-		result[resultlen] = 0;
+		resultlen = LENGTH(theString);
+		orig = (char*) RAW(theString);
 	} else { /* or a string */
-		result = (unsigned char*) STRING_VALUE(theString);
+		orig = (char*) STRING_VALUE(theString);
+		resultlen = strlen(orig);
 	}
+	unsigned char * result = malloc(resultlen + 1);
+	strncpy(result, (unsigned char*) orig, resultlen);
+	result[resultlen] = 0;
 	return result;
 }
