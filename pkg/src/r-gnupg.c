@@ -32,20 +32,9 @@
 
 #include "simple.h"
 
-SEXP encrypt(SEXP theKey, SEXP theText) {
+SEXP encrypt(SEXP theKeyFile, SEXP theText) {
 
-	char * output = "not implemented yet";
-	SEXP theResult = NULL;
-	PROTECT(theResult=allocVector(STRSXP, 1));
-	SET_STRING_ELT(theResult, 0, mkChar(output));
-	UNPROTECT(1);
-
-	return theResult;
-}
-
-SEXP sign(SEXP theKeyFile, SEXP theTextToSign) {
-
-	unsigned char * output = signSomeText(strFromSEXP(theKeyFile), strFromSEXP(theTextToSign));
+	unsigned char * output = encryptSomeText(strFromSEXP(theKeyFile), strFromSEXP(theText));
 
 	SEXP theResult = NULL;
 	PROTECT(theResult=allocVector(STRSXP, 1));
@@ -53,6 +42,46 @@ SEXP sign(SEXP theKeyFile, SEXP theTextToSign) {
 	UNPROTECT(1);
 
 	free(output);
+
+	return theResult;
+}
+
+SEXP sign(SEXP theKeyFile, SEXP theText) {
+
+	unsigned char * output = signSomeText(strFromSEXP(theKeyFile), strFromSEXP(theText));
+
+	SEXP theResult = NULL;
+	PROTECT(theResult=allocVector(STRSXP, 1));
+	SET_STRING_ELT(theResult, 0, mkChar(output));
+	UNPROTECT(1);
+
+	free(output);
+
+	return theResult;
+}
+
+SEXP decrypt(SEXP theKeyFile, SEXP theText) {
+
+	unsigned char * output = decryptSomeText(strFromSEXP(theKeyFile), strFromSEXP(theText));
+
+	SEXP theResult = NULL;
+	PROTECT(theResult=allocVector(STRSXP, 1));
+	SET_STRING_ELT(theResult, 0, mkChar(output));
+	UNPROTECT(1);
+
+	free(output);
+
+	return theResult;
+}
+
+SEXP verify(SEXP theKeyFile, SEXP theSignature, SEXP theText) {
+
+	bool output = verifySomeSignature(strFromSEXP(theKeyFile), strFromSEXP(theSignature), strFromSEXP(theText));
+
+	SEXP theResult = NULL;
+	PROTECT(theResult=allocVector(STRSXP, 1));
+	SET_STRING_ELT(theResult, 0, mkChar(""));
+	UNPROTECT(1);
 
 	return theResult;
 }
