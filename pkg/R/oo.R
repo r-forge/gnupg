@@ -26,12 +26,9 @@
 ## initial date       :  20110429
 ##
 
-GnuPG <- setRefClass("gnupg",
-                     fields=list(
-                       homedir = "character"),
-                     methods=list(
-                       encrypt = function(...) {},
-                       decrypt = function(...) {},
-                       sign = function(...) {},
-                       clearsign = function(...) {},
-                       verify = function(...) {}))
+SshKey <- setRefClass("sshkey",
+                      fields=list(
+                        homedir = "character"),
+                      methods=list(
+                        sign = function(...) {},
+                        verify = function(...) {}))
