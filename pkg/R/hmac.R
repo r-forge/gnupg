@@ -22,7 +22,7 @@ make.raw.default <- function(object) as.raw(object)
 pad.with.zeros <- function(k) {
   k <- make.raw(k)
   while(length(k) > 64)
-    k <- make.raw(digest(k, algo="sha1", serialize=FALSE))
+    k <- make.raw.digest(digest(k, algo="sha1", serialize=FALSE))
   make.raw(c(k, rep(0, 64 - length(k))))
 }
 
